@@ -162,3 +162,115 @@ Using GetX for navigation simplifies the process, making it cleaner and more rea
 <img src = "https://github.com/user-attachments/assets/85005e95-6743-4e0e-8f04-f143347b4ff1" width=22% height=35%>
 
 https://github.com/user-attachments/assets/519210bd-022c-4700-9eea-1ba390e9d445
+
+
+Using the GetX package in Flutter for theme management allows you to easily switch between light and dark themes or even customize themes dynamically. Here’s a step-by-step guide to implement theme change functionality using GetX:
+
+### Step 1: Add Dependencies
+Add `get` to your `pubspec.yaml` file:
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  get: ^4.3.8
+```
+
+### Step 2: Create a Theme Controller
+Create a `ThemeController` class to manage the theme state.
+```dart
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../main.dart';
+
+class ThemeController extends GetxController
+{
+  RxBool theme =false.obs;
+
+  void ChnageTheme(bool value)
+  {
+    theme.value= value;
+    Get.changeTheme(theme.value? darkTheme:lightTheme);
+  }
+
+
+}
+
+### Step 3: Initialize the Controller
+Initialize the `ThemeController` in your main application file.
+```dart
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'theme_controller.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Initialize ThemeController
+    final ThemeController themeController = Get.put(ThemeController());
+
+    return Obx(() => GetMaterialApp(
+          title: 'Flutter Theme Change with GetX',
+          theme: ThemeData.light(),
+          darkTheme: ThemeData.dark(),
+          themeMode: themeController.theme,
+          home: HomePage(),
+        ));
+  }
+}
+```
+
+### Step 4: Create the Home Page
+Create a `HomePage` widget to toggle the theme.
+```dart
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'theme_controller.dart';
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeController themeController = Get.find();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Theme Change with GetX'),
+        actions: [
+          IconButton(
+            icon: Icon(themeController.isDarkTheme ? Icons.light_mode : Icons.dark_mode),
+            onPressed: () {
+              themeController.toggleTheme();
+            },
+          ),
+        ],
+      ),
+      body: Center(
+        child: Text('Hello, GetX!'),
+      ),
+    );
+  }
+}
+```
+
+### Step 5: Run Your App
+Run your app to see the theme change in action.
+
+This setup provides a reactive way to handle theme changes using GetX, allowing for a smooth and efficient user experience. The `Obx` widget listens for changes in the `ThemeController` and updates the theme accordingly when the `toggleTheme` method is called.
+
+
+
+
+<img src = "https://github.com/user-attachments/assets/d01dbbc6-c19f-4656-81d6-37a3984ee91d" width=22% height=35%>
+
+
+
+https://github.com/user-attachments/assets/4a95c8b5-7104-4a37-b5db-67cc1977ab90
+
+
+
+
+
